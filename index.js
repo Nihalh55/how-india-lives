@@ -121,7 +121,7 @@ app.post('/database', function(req,res){
     }
     else if(req.body.table == "pca"){
 
-        if(req.body.input == "TOT_P" || req.body.input == "Households"){
+        if(req.body.input == "TOT_P"){
 
             //the req.body.input has the attribute name for the table
             req.body.input = "TOT_P";
@@ -132,16 +132,16 @@ app.post('/database', function(req,res){
                 console.log('Data sent');
             });
         }
-        /*else if(req.body.input == "Households"){
+        else if(req.body.input == "Households"){
 
             //the req.body.input has the attribute name for the table
-            var query = "select distinct state.ISO_Code as State_Code, state.Name as State, (t.value/t.total)*100 as " + req.body.input + " from (select state, sum(" + req.body.input +") value,sum(TOT_P) total from pca_total group by state) as t,state where t.state = state.sid;"
+            var query = "select distinct state.ISO_Code as State_Codee, state.Name as State, (t.value/t.total)*100 as " + req.body.input + " from (select pca_total.state as state_code, sum(" + req.body.input +" * Total_Number_of_households) value,sum(Total_Number_of_households) total from hlpca_total, pca_total  group by pca_total.state state Inner join pca_total on hlpca_total where hlpca_total.district_code = pca_total.district) as t,state where t.state_code = state.sid;"
             pool.query(query,function(err,results,fields){
                 if(err) throw err;
                 res.send(results);
                 console.log('Data sent');
             });
-        }*/
+        }
         else{
 
             //the req.body.input has the attribute name for the table
